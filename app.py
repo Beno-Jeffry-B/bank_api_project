@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 from flask import Flask, jsonify
-from models import db,Bank
+from models import db,Bank,Branch
 
 load_dotenv() 
 
@@ -26,6 +26,25 @@ def home():
 def get_banks():
     banks = Bank.query.all()
     result = [{"id": bank.id, "name": bank.name} for bank in banks]
+    return jsonify(result), 200
+@app.route('/branches/<ifsc>', methods=['GET'])
+def get_branch_by_ifsc(ifsc):
+    branch = Branch.query.filter_by(ifsc=ifsc).first()
+
+    if not branch:
+        return jsonify({"error": "Branch not found"}), 404
+
+    result = {
+        "ifsc": branch.ifsc,
+        "bank_id": branch.bank_id,
+        "branch": branch.branch,
+        "address": branch.address,
+        "city": branch.city,
+        "district": branch.district,
+        "state": branch.state,
+        "bank_name": branch.bank.name  
+    }
+
     return jsonify(result), 200
 
 
