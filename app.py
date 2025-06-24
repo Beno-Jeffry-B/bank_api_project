@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from flask import Flask, jsonify
+from flask import Flask, jsonify,request
 from models import db,Bank,Branch
 
 load_dotenv() 
@@ -46,6 +46,36 @@ def get_branch_by_ifsc(ifsc):
     }
 
     return jsonify(result), 200
+
+# Search by bank and city by implementing joins
+@app.route('/branches', methods=['GET'])
+def get_branches():
+    bank_name = request.args.get('bank_name')
+    city = request.args.get('city')
+
+    if not bank_name or not city:
+        return jsonify({"error": "Both 'bank_name' and 'city' query parameters are required."}), 400
+
+    # Performing JOIN query
+    branches = Branch.query.join(Bank).filter(
+        Bank.name.ilike(bank_name),
+        Branch.city.ilike(city)
+    ).all()
+
+    result = []
+    for b in branches:
+        result.append({
+            "ifsc": b.ifsc,
+            "branch": b.branch,
+            "address": b.address,
+            "city": b.city,
+            "district": b.district,
+            "state": b.state,
+            "bank_name": b.bank.name
+        })
+
+    return jsonify(result), 200
+
 
 
 if __name__ == "__main__":
