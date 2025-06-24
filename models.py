@@ -22,3 +22,5 @@ class Branch(db.Model):
 
 #relationship
     bank = db.relationship("Bank", backref="branches")
+
+

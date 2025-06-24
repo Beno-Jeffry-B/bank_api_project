@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 from flask import Flask, jsonify
-from models import db
+from models import db,Bank
 
 load_dotenv() 
 
@@ -22,7 +22,15 @@ db.init_app(app)
 def home():
     return jsonify({"message": "Bank API is live!"})
 
+@app.route('/banks', methods=['GET'])
+def get_banks():
+    banks = Bank.query.all()
+    result = [{"id": bank.id, "name": bank.name} for bank in banks]
+    return jsonify(result), 200
 
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+
+    
