@@ -84,9 +84,8 @@ bank_api_project/
 
 ```
 ---
-
 ## 🧠 Final Thoughts
 
 This project helped me solidify my understanding of backend development, data normalization, ORM usage, environment security, and cloud deployment. Despite challenges with speed and connectivity, I successfully built and deployed a fully working production-grade API with public endpoints that serve real-time branch data efficiently.
 
-
+> *Note: Test cases have not been added to this submission as the primary focus was on building a robust and deployment-ready API, along with managing and normalizing a large dataset effectively. The codebase has been structured in a clean and modular way, making it easy to integrate tests in future iterations.*
