@@ -8,11 +8,12 @@ load_dotenv()
 app = Flask(__name__)
 load_dotenv()
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("SQLALCHEMY_DATABASE_URI") 
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:+?yryWcN66_89*M@db.afvbqqpqokxpelfxpfem.supabase.co:5432/postgres"
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
+
 
 @app.route('/')
 def home():
@@ -23,6 +24,7 @@ def get_banks():
     banks = Bank.query.all()
     result = [{"id": bank.id, "name": bank.name} for bank in banks]
     return jsonify(result), 200
+
 @app.route('/branches/<ifsc>', methods=['GET'])
 def get_branch_by_ifsc(ifsc):
     branch = Branch.query.filter_by(ifsc=ifsc).first()
